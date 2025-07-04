@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار شامل في علوم الحاسوب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --light-bg: #f8f9fa;
+            --dark-text: #343a40;
+            --border-color: #dee2e6;
+        }
+
+        body {
+            font-family: 'Changa', sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            color: var(--dark-text);
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: var(--dark-text);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-info {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .header-info h3 {
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+        }
+        .header-info p {
+            margin: 0;
+            color: var(--info-color);
+        }
+
+        .quiz-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .quiz-section h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .question p {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--dark-text);
+            font-size: 1.1em;
+        }
+
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .options label:hover {
+            background-color: #e2e6ea;
+            border-color: #a7b7c7;
+        }
+
+        .options input[type="radio"] {
+            margin-left: 10px;
+            transform: scale(1.2);
+        }
+
+        .user-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .user-info div {
+            flex: 1;
+            min-width: 280px;
+            margin: 10px;
+        }
+
+        .user-info label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--dark-text);
+        }
+
+        .user-info input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 30px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #results {
+            margin-top: 30px;
+            padding: 25px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            background-color: var(--light-bg);
+            display: none; /* Hidden by default */
+        }
+
+        #results h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        #results p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-question-text {
+            flex-basis: 70%;
+            text-align: right;
+        }
+
+        .result-status {
+            flex-basis: 25%;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .correct {
+            color: var(--success-color);
+        }
+
+        .incorrect {
+            color: var(--danger-color);
+        }
+
+        .correct-answer-text {
+            font-size: 0.9em;
+            color: var(--info-color);
+            margin-top: 5px;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-size: 1.1em;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .feedback.pass {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .feedback.fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .author-info {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 1.1em;
+            color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .user-info {
+                flex-direction: column;
+            }
+            .user-info div {
+                min-width: unset;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .question p {
+                font-size: 1em;
+            }
+            .options label {
+                padding: 6px 10px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>اختبار شامل في علوم الحاسوب</h1>
+        <div class="header-info">
+            <h3>اعداد وتقديم: قيس طلال الجازي</h3>
+           
+        </div>
+
+        <div class="user-info">
+            <div>
+                <label for="studentName">اسم المتقدم:</label>
+                <input type="text" id="studentName" placeholder="أدخل اسمك" required>
+            </div>
+            <div>
+                <label for="studentID">رقم الجلوس:</label>
+                <input type="text" id="studentID" placeholder="أدخل رقم جلوسك" required>
+            </div>
+        </div>
+
+        <form id="quizForm">
+            <div class="quiz-section">
+                <h3>الوحدة الأولى: أنظمة العد</h3>
+                <div class="question" data-question-index="0">
+                    <p>ما هو الأساس المستخدم في النظام العشري (Decimal System)؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q0" value="a"> أ) 2</label>
+                        <label><input type="radio" name="q0" value="b"> ب) 8</label>
+                        <label><input type="radio" name="q0" value="c"> ج) 10</label>
+                        <label><input type="radio" name="q0" value="d"> د) 16</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="1">
+                    <p>الرموز المستخدمة في النظام الثنائي (Binary System) هي:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="a"> أ) 0، 1، 2</label>
+                        <label><input type="radio" name="q1" value="b"> ب) 0، 1</label>
+                        <label><input type="radio" name="q1" value="c"> ج) من 0 إلى 7</label>
+                        <label><input type="radio" name="q1" value="d"> د) من 0 إلى 9</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="2">
+                    <p>أي من الأعداد التالية لا ينتمي إلى النظام الثماني (Octal System)؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="a"> أ) (177)₈</label>
+                        <label><input type="radio" name="q2" value="b"> ب) (205)₈</label>
+                        <label><input type="radio" name="q2" value="c"> ج) (64)₈</label>
+                        <label><input type="radio" name="q2" value="d"> د) (381)₈</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="3">
+                    <p>ماذا يطلق على الخانة الثنائية الواحدة في النظام الثنائي؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q3" value="a"> أ) بايت (Byte)</label>
+                        <label><input type="radio" name="q3" value="b"> ب) بت (Bit)</label>
+                        <label><input type="radio" name="q3" value="c"> ج) رقم (Digit)</label>
+                        <label><input type="radio" name="q3" value="d"> د) كلمة (Word)</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="4">
+                    <p>ما هو وزن الخانة (المنزلة) الثالثة في النظام العشري (ترتيبها 2)؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q4" value="a"> أ) 10</label>
+                        <label><input type="radio" name="q4" value="b"> ب) 100</label>
+                        <label><input type="radio" name="q4" value="c"> ج) 1000</label>
+                        <label><input type="radio" name="q4" value="d"> د) 1</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="5">
+                    <p>العدد الثنائي (1101)₂ يكافئ في النظام العشري العدد:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q5" value="a"> أ) 10</label>
+                        <label><input type="radio" name="q5" value="b"> ب) 11</label>
+                        <label><input type="radio" name="q5" value="c"> ج) 12</label>
+                        <label><input type="radio" name="q5" value="d"> د) 13</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="6">
+                    <p>العدد العشري (25)₁₀ يكافئ في النظام الثنائي العدد:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q6" value="a"> أ) 11001</label>
+                        <label><input type="radio" name="q6" value="b"> ب) 10011</label>
+                        <label><input type="radio" name="q6" value="c"> ج) 11101</label>
+                        <label><input type="radio" name="q6" value="d"> د) 10101</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="7">
+                    <p>ما القيمة التي يمثلها الرمز (E) في النظام السادس عشر؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q7" value="a"> أ) 11</label>
+                        <label><input type="radio" name="q7" value="b"> ب) 12</label>
+                        <label><input type="radio" name="q7" value="c"> ج) 13</label>
+                        <label><input type="radio" name="q7" value="d"> د) 14</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="8">
+                    <p>العدد (A2)₁₆ في النظام السادس عشر يكافئ في النظام العشري:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q8" value="a"> أ) 152</label>
+                        <label><input type="radio" name="q8" value="b"> ب) 162</label>
+                        <label><input type="radio" name="q8" value="c"> ج) 172</label>
+                        <label><input type="radio" name="q8" value="d"> د) 182</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="9">
+                    <p>لتحويل عدد من النظام الثنائي إلى النظام الثماني، نقوم بتقسيم العدد الثنائي إلى مجموعات كل منها تتكون من:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q9" value="a"> أ) خانتين (2 بت)</label>
+                        <label><input type="radio" name="q9" value="b"> ب) ثلاث خانات (3 بت)</label>
+                        <label><input type="radio" name="q9" value="c"> ج) أربع خانات (4 بت)</label>
+                        <label><input type="radio" name="q9" value="d"> د) ثماني خانات (8 بت)</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="10">
+                    <p>نتيجة جمع العددين الثنائيين (101) + (011) هي:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q10" value="a"> أ) 1000</label>
+                        <label><input type="radio" name="q10" value="b"> ب) 111</label>
+                        <label><input type="radio" name="q10" value="c"> ج) 1010</label>
+                        <label><input type="radio" name="q10" value="d"> د) 1001</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="11">
+                    <p>العدد الثماني (75)₈ يكافئ في النظام الثنائي:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q11" value="a"> أ) 111101</label>
+                        <label><input type="radio" name="q11" value="b"> ب) 101111</label>
+                        <label><input type="radio" name="q11" value="c"> ج) 011101</label>
+                        <label><input type="radio" name="q11" value="d"> د) 110111</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>الوحدة الثانية: الذكاء الاصطناعي وتطبيقاته</h3>
+                <div class="question" data-question-index="12">
+                    <p>"علم من علوم الحاسوب يختص بتصميم وتمثيل وبرمجة نماذج حاسوبية تحاكي أسلوب التفكير البشري"، هذا تعريف لـ:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q12" value="a"> أ) الروبوتات</label>
+                        <label><input type="radio" name="q12" value="b"> ب) النظم الخبيرة</label>
+                        <label><input type="radio" name="q12" value="c"> ج) الذكاء الاصطناعي</label>
+                        <label><input type="radio" name="q12" value="d"> د) أمن المعلومات</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="13">
+                    <p>ما هو الهدف من "اختبار تورنغ" (Turing Test)؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q13" value="a"> أ) اختبار سرعة الحاسوب</label>
+                        <label><input type="radio" name="q13" value="b"> ب) تحديد ما إذا كان للآلة القدرة على التفكير كالإنسان</label>
+                        <label><input type="radio" name="q13" value="c"> ج) اختبار لغات البرمجة</label>
+                        <label><input type="radio" name="q13" value="d"> د) اختبار أمان النظام</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="14">
+                    <p>أي من اللغات التالية تستخدم بشكل شائع في برمجة تطبيقات الذكاء الاصطناعي حسب النص؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q14" value="a"> أ) C++</label>
+                        <label><input type="radio" name="q14" value="b"> ب) Java</label>
+                        <label><input type="radio" name="q14" value="c"> ج) Lisp</label>
+                        <label><input type="radio" name="q14" value="d"> د) Python</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="15">
+                    <p>آلة كهروميكانيكية تبرمج بواسطة الحاسوب للقيام بأعمال معينة، هي:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q15" value="a"> أ) النظام الخبير</label>
+                        <label><input type="radio" name="q15" value="b"> ب) الذكاء الاصطناعي</label>
+                        <label><input type="radio" name="q15" value="c"> ج) الخوارزمية</label>
+                        <label><input type="radio" name="q15" value="d"> د) الروبوت</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="16">
+                    <p>أي مما يلي يعد من مجالات استخدام الروبوتات كما ورد في النص؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q16" value="a"> أ) كتابة الشعر</label>
+                        <label><input type="radio" name="q16" value="b"> ب) التحليل المالي</label>
+                        <label><input type="radio" name="q16" value="c"> ج) استكشاف الأماكن البعيدة والخطرة</label>
+                        <label><input type="radio" name="q16" value="d"> د) جميع ما ذكر</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="17">
+                    <p>برنامج حاسوبي ذكي يستخدم مجموعة من قواعد المعرفة في مجال معين لحل المشكلات التي تحتاج إلى خبرة بشرية، هو:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q17" value="a"> أ) الروبوت</label>
+                        <label><input type="radio" name="q17" value="b"> ب) النظام الخبير</label>
+                        <label><input type="radio" name="q17" value="c"> ج) محرك البحث</label>
+                        <label><input type="radio" name="q17" value="d"> د) شجرة البحث</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="18">
+                    <p>أي من النظم الخبيرة التالية يستخدم في تحليل المركبات الكيميائية حسب النص؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q18" value="a"> أ) PUFF</label>
+                        <label><input type="radio" name="q18" value="b"> ب) PROSPECTOR</label>
+                        <label><input type="radio" name="q18" value="c"> ج) DESIGN ADVISOR</label>
+                        <label><input type="radio" name="q18" value="d"> د) DENDRAL</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="19">
+                    <p>المكونان الرئيسيان للنظام الخبير هما:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q19" value="a"> أ) قاعدة البيانات ومحرك البحث</label>
+                        <label><input type="radio" name="q19" value="b"> ب) قاعدة المعرفة ومحرك الاستدلال</label>
+                        <label><input type="radio" name="q19" value="c"> ج) الواجهة الرسومية والذاكرة</label>
+                        <label><input type="radio" name="q19" value="d"> د) المعالج والذاكرة</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="20">
+                    <p>في شجرة البحث، تسمى النقطة التي يبدأ منها البحث:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q20" value="a"> أ) العقدة الميتة</label>
+                        <label><input type="radio" name="q20" value="b"> ب) العقدة الهدف</label>
+                        <label><input type="radio" name="q20" value="c"> ج) الجذر (Root)</label>
+                        <label><input type="radio" name="q20" value="d"> د) المسار</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="21">
+                    <p>مجموعة العقد الواقعة على فرع واحد في شجرة البحث تسمى:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q21" value="a"> أ) الحالة</label>
+                        <label><input type="radio" name="q21" value="b"> ب) المسار (Path)</label>
+                        <label><input type="radio" name="q21" value="c"> ج) الفضاء</label>
+                        <label><input type="radio" name="q21" value="d"> د) الهدف</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="22">
+                    <p>خوارزمية البحث التي تتبع مسارًا واحدًا إلى أقصى عمق ممكن قبل العودة للخلف تسمى:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q22" value="a"> أ) البحث في العرض أولاً</label>
+                        <label><input type="radio" name="q22" value="b"> ب) البحث في العمق أولاً (DFS)</label>
+                        <label><input type="radio" name="q22" value="c"> ج) البحث العشوائي</label>
+                        <label><input type="radio" name="q22" value="d"> د) البحث الأفقي</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>الوحدة الثالثة: البوابات المنطقية</h3>
+                <div class="question" data-question-index="23">
+                    <p>دائرة إلكترونية بسيطة تقوم بعملية منطقية على مدخل واحد أو أكثر وتنتج مخرجاً منطقياً واحداً، هي:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q23" value="a"> أ) الترانزستور</label>
+                        <label><input type="radio" name="q23" value="b"> ب) المقاوم</label>
+                        <label><input type="radio" name="q23" value="c"> ج) البوابة المنطقية</label>
+                        <label><input type="radio" name="q23" value="d"> د) المعالج الدقيق</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="24">
+                    <p>أي بوابة منطقية تعطي مخرجاً قيمته (1) فقط إذا كانت قيمة جميع مداخلها (1)؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q24" value="a"> أ) AND</label>
+                        <label><input type="radio" name="q24" value="b"> ب) OR</label>
+                        <label><input type="radio" name="q24" value="c"> ج) NOT</label>
+                        <label><input type="radio" name="q24" value="d"> د) NAND</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="25">
+                    <p>أي بوابة منطقية تعطي مخرجاً قيمته (0) فقط إذا كانت قيمة جميع مداخلها (0)؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q25" value="a"> أ) AND</label>
+                        <label><input type="radio" name="q25" value="b"> ب) OR</label>
+                        <label><input type="radio" name="q25" value="c"> ج) NOT</label>
+                        <label><input type="radio" name="q25" value="d"> د) NOR</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="26">
+                    <p>البوابة المنطقية التي لها مدخل واحد ومخرج واحد وتقوم بعكس قيمة المدخل هي:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q26" value="a"> أ) AND</label>
+                        <label><input type="radio" name="q26" value="b"> ب) OR</label>
+                        <label><input type="radio" name="q26" value="c"> ج) NOT</label>
+                        <label><input type="radio" name="q26" value="d"> د) XOR</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="27">
+                    <p>ما ناتج العبارة المنطقية التالية: 1 AND (0 OR 1)؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q27" value="a"> أ) 0</label>
+                        <label><input type="radio" name="q27" value="b"> ب) 1</label>
+                        <label><input type="radio" name="q27" value="c"> ج) 2</label>
+                        <label><input type="radio" name="q27" value="d"> د) خطأ</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="28">
+                    <p>البوابة المنطقية (NAND) هي بوابة مشتقة من بوابتي:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q28" value="a"> أ) NOT و OR</label>
+                        <label><input type="radio" name="q28" value="b"> ب) NOT و AND</label>
+                        <label><input type="radio" name="q28" value="c"> ج) AND و OR</label>
+                        <label><input type="radio" name="q28" value="d"> د) NOT و XOR</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="29">
+                    <p>في الجبر البولي (المنطقي)، يرمز لعملية (AND) بالرمز:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q29" value="a"> أ) +</label>
+                        <label><input type="radio" name="q29" value="b"> ب) .</label>
+                        <label><input type="radio" name="q29" value="c"> ج) ' (شرطة علوية)</label>
+                        <label><input type="radio" name="q29" value="d"> د) /</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="30">
+                    <p>في الجبر البولي (المنطقي)، يرمز لعملية (OR) بالرمز:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q30" value="a"> أ) +</label>
+                        <label><input type="radio" name="q30" value="b"> ب) .</label>
+                        <label><input type="radio" name="q30" value="c"> ج) ' (شرطة علوية)</label>
+                        <label><input type="radio" name="q30" value="d"> د) /</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="31">
+                    <p>إذا كانت A=1, B=1, C=0، فما ناتج العبارة الجبرية المنطقية: A . (B + C)؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q31" value="a"> أ) 0</label>
+                        <label><input type="radio" name="q31" value="b"> ب) 1</label>
+                        <label><input type="radio" name="q31" value="c"> ج) A</label>
+                        <label><input type="radio" name="q31" value="d"> د) C</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="32">
+                    <p>أي من البوابات التالية تسمى "العاكس" (Inverter)؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q32" value="a"> أ) AND</label>
+                        <label><input type="radio" name="q32" value="b"> ب) OR</label>
+                        <label><input type="radio" name="q32" value="c"> ج) NOT</label>
+                        <label><input type="radio" name="q32" value="d"> د) NAND</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="33">
+                    <p>ما ناتج العبارة المنطقية: (1 NAND 0)؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q33" value="a"> أ) 0</label>
+                        <label><input type="radio" name="q33" value="b"> ب) 1</label>
+                        <label><input type="radio" name="q33" value="c"> ج) غير معروف</label>
+                        <label><input type="radio" name="q33" value="d"> د) 2</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="34">
+                    <p>ما ناتج العبارة المنطقية: (0 NOR 0)؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q34" value="a"> أ) 0</label>
+                        <label><input type="radio" name="q34" value="b"> ب) 1</label>
+                        <label><input type="radio" name="q34" value="c"> ج) غير معروف</label>
+                        <label><input type="radio" name="q34" value="d"> د) 2</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>الوحدة الرابعة: أمن المعلومات والتشفير</h3>
+                <div class="question" data-question-index="35">
+                    <p>العلم الذي يعمل على حماية المعلومات والمعدات المستخدمة لتخزينها ومعالجتها ونقلها من السرقة أو التطفل، هو:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q35" value="a"> أ) الذكاء الاصطناعي</label>
+                        <label><input type="radio" name="q35" value="b"> ب) علم الروبوتات</label>
+                        <label><input type="radio" name="q35" value="c"> ج) أمن المعلومات</label>
+                        <label><input type="radio" name="q35" value="d"> د) علم البيانات</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="36">
+                    <p>الخاصية التي تعني "أن المعلومة متوفرة للأشخاص المصرح لهم فقط" هي:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q36" value="a"> أ) السلامة (Integrity)</label>
+                        <label><input type="radio" name="q36" value="b"> ب) السرية (Confidentiality)</label>
+                        <label><input type="radio" name="q36" value="c"> ج) التوافر (Availability)</label>
+                        <label><input type="radio" name="q36" value="d"> د) الموثوقية</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="37">
+                    <p>ضمان عدم تغيير البيانات أو تعديلها من قبل أشخاص غير مخولين هو تعريف لخاصية:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q37" value="a"> أ) السلامة (Integrity)</label>
+                        <label><input type="radio" name="q37" value="b"> ب) السرية (Confidentiality)</label>
+                        <label><input type="radio" name="q37" value="c"> ج) التوافر (Availability)</label>
+                        <label><input type="radio" name="q37" value="d"> د) عدم الإنكار</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="38">
+                    <p>أي من المخاطر التالية يهدد "سرية" المعلومات؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q38" value="a"> أ) التنصت</label>
+                        <label><input type="radio" name="q38" value="b"> ب) التعديل على المحتوى</label>
+                        <label><input type="radio" name="q38" value="c"> ج) إيقاف الخدمة</label>
+                        <label><input type="radio" name="q38" value="d"> د) انتحال الشخصية</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="39">
+                    <p>أي من التهديدات التالية يعتبر "هجوماً إلكترونياً" يهدف إلى إيقاف موقع عن العمل؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q39" value="a"> أ) هجوم حجب الخدمة (DoS)</label>
+                        <label><input type="radio" name="q39" value="b"> ب) التنصت</label>
+                        <label><input type="radio" name="q39" value="c"> ج) سرقة البيانات</label>
+                        <label><input type="radio" name="q39" value="d"> د) التعديل</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="40">
+                    <p>التقنية التي تعمل على إخفاء عناوين IP الخاصة بالشبكة الداخلية عند اتصالها بالإنترنت هي:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q40" value="a"> أ) Firewall</label>
+                        <label><input type="radio" name="q40" value="b"> ب) DNS</label>
+                        <label><input type="radio" name="q40" value="c"> ج) NAT</label>
+                        <label><input type="radio" name="q40" value="d"> د) VPN</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="41">
+                    <p>"مزج النص الأصلي بمعلومات أخرى ليظهر بمظهر غير مفهوم" هو تعريف لـ:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q41" value="a"> أ) أمن المعلومات</label>
+                        <label><input type="radio" name="q41" value="b"> ب) التوقيع الرقمي</label>
+                        <label><input type="radio" name="q41" value="c"> ج) التشفير</label>
+                        <label><input type="radio" name="q41" value="d"> د) التحقق</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="42">
+                    <p>النص الواضح والمقروء قبل عملية التشفير يسمى:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q42" value="a"> أ) النص المشفر</label>
+                        <label><input type="radio" name="q42" value="b"> ب) المفتاح</label>
+                        <label><input type="radio" name="q42" value="c"> ج) النص الأصلي</label>
+                        <label><input type="radio" name="q42" value="d"> د) الخوارزمية</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="43">
+                    <p>سلسلة الرموز أو العدد الذي يستخدم في خوارزمية التشفير، وتعتمد قوة التشفير عليه، هو:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q43" value="a"> أ) النص الأصلي</label>
+                        <label><input type="radio" name="q43" value="b"> ب) النص المشفر</label>
+                        <label><input type="radio" name="q43" value="c"> ج) الخوارزمية</label>
+                        <label><input type="radio" name="q43" value="d"> د) مفتاح التشفير</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="44">
+                    <p>تصنف خوارزمية "الخط المتعرج" (Zig-Zag Cipher) على أنها من خوارزميات:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q44" value="a"> أ) التعويض</label>
+                        <label><input type="radio" name="q44" value="b"> ب) التبديل</label>
+                        <label><input type="radio" name="q44" value="c"> ج) المفتاح العام</label>
+                        <label><input type="radio" name="q44" value="d"> د) التدفق</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="45">
+                    <p>باستخدام خوارزمية الخط المتعرج ومفتاح تشفير (عدد الأسطر) يساوي 2، ما هو النص المشفر للرسالة "STAY HOME"؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q45" value="a"> أ) SYOATHME</label>
+                        <label><input type="radio" name="q45" value="b"> ب) S A H M T Y O E</label>
+                        <label><input type="radio" name="q45" value="c"> ج) EOMHYATS</label>
+                        <label><input type="radio" name="q45" value="d"> د) لا يمكن تشفيرها</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="46">
+                    <p>ما هو النص الأصلي للرسالة المشفرة "HLOELWRD" إذا تم تشفيرها بخوارزمية الخط المتعرج ومفتاح يساوي 2؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q46" value="a"> أ) HELLO WORLD</label>
+                        <label><input type="radio" name="q46" value="b"> ب) WORLD HELLO</label>
+                        <label><input type="radio" name="q46" value="c"> ج) HWLO ELRD</label>
+                        <label><input type="radio" name="q46" value="d"> د) لا يمكن فكها</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="47">
+                    <p>ما هي أهمية الحفاظ على سرية "مفتاح التشفير"؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q47" value="a"> أ) لزيادة سرعة التشفير</label>
+                        <label><input type="radio" name="q47" value="b"> ب) لأنه يمثل الخوارزمية نفسها</label>
+                        <label><input type="radio" name="q47" value="c"> ج) لأن معرفته تسمح بفك تشفير الرسائل</label>
+                        <label><input type="radio" name="q47" value="d"> د) لأنه يقلل حجم النص المشفر</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="48">
+                    <p>أي من العناصر التالية ليس من عناصر عملية التشفير الأساسية؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q48" value="a"> أ) خوارزمية التشفير</label>
+                        <label><input type="radio" name="q48" value="b"> ب) مفتاح التشفير</label>
+                        <label><input type="radio" name="q48" value="c"> ج) النص الأصلي</label>
+                        <label><input type="radio" name="q48" value="d"> د) حجم القرص الصلب</label>
+                    </div>
+                </div>
+                <div class="question" data-question-index="49">
+                    <p>ما هو الهدف الرئيسي من التشفير؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q49" value="a"> أ) ضغط البيانات</label>
+                        <label><input type="radio" name="q49" value="b"> ب) زيادة سرعة النقل</label>
+                        <label><input type="radio" name="q49" value="c"> ج) ضمان سرية وسلامة البيانات</label>
+                        <label><input type="radio" name="q49" value="d"> د) تنظيم الملفات</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit">إرسال الإجابات</button>
+        </form>
+
+        <div id="results">
+            <h2>نتائج الاختبار</h2>
+            <p><strong>اسم المتقدم:</strong> <span id="displayedName"></span></p>
+            <p><strong>رقم الجلوس:</strong> <span id="displayedID"></span></p>
+            <p><strong>عدد الإجابات الصحيحة:</strong> <span id="score">0</span> / 50</p>
+            <p><strong>النسبة المئوية:</strong> <span id="percentage">0</span>%</p>
+            <div id="feedback" class="feedback"></div>
+            <h3>تفاصيل الإجابات:</h3>
+            <div id="answerDetails">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const correctAnswers = [
+            'c', 'b', 'd', 'b', 'b', 'd', 'a', 'd', 'b', 'b',
+            'a', 'a', 'c', 'b', 'c', 'd', 'c', 'b', 'd', 'b',
+            'c', 'b', 'b', 'c', 'a', 'b', 'c', 'b', 'b', 'b',
+            'a', 'b', 'c', 'b', 'b', 'c', 'b', 'a', 'a', 'a',
+            'c', 'c', 'c', 'd', 'b', 'a', 'a', 'c', 'd', 'c'
+        ];
+
+        const questionsText = [
+            "ما هو الأساس المستخدم في النظام العشري (Decimal System)؟",
+            "الرموز المستخدمة في النظام الثنائي (Binary System) هي:",
+            "أي من الأعداد التالية لا ينتمي إلى النظام الثماني (Octal System)؟",
+            "ماذا يطلق على الخانة الثنائية الواحدة في النظام الثنائي؟",
+            "ما هو وزن الخانة (المنزلة) الثالثة في النظام العشري (ترتيبها 2)؟",
+            "العدد الثنائي (1101)₂ يكافئ في النظام العشري العدد:",
+            "العدد العشري (25)₁₀ يكافئ في النظام الثنائي العدد:",
+            "ما القيمة التي يمثلها الرمز (E) في النظام السادس عشر؟",
+            "العدد (A2)₁₆ في النظام السادس عشر يكافئ في النظام العشري:",
+            "لتحويل عدد من النظام الثنائي إلى النظام الثماني، نقوم بتقسيم العدد الثنائي إلى مجموعات كل منها تتكون من:",
+            "نتيجة جمع العددين الثنائيين (101) + (011) هي:",
+            "العدد الثماني (75)₈ يكافئ في النظام الثنائي:",
+            "\"علم من علوم الحاسوب يختص بتصميم وتمثيل وبرمجة نماذج حاسوبية تحاكي أسلوب التفكير البشري\"، هذا تعريف لـ:",
+            "ما هو الهدف من \"اختبار تورنغ\" (Turing Test)؟",
+            "أي من اللغات التالية تستخدم بشكل شائع في برمجة تطبيقات الذكاء الاصطناعي حسب النص؟",
+            "آلة كهروميكانيكية تبرمج بواسطة الحاسوب للقيام بأعمال معينة، هي:",
+            "أي مما يلي يعد من مجالات استخدام الروبوتات كما ورد في النص؟",
+            "برنامج حاسوبي ذكي يستخدم مجموعة من قواعد المعرفة في مجال معين لحل المشكلات التي تحتاج إلى خبرة بشرية، هو:",
+            "أي من النظم الخبيرة التالية يستخدم في تحليل المركبات الكيميائية حسب النص؟",
+            "المكونان الرئيسيان للنظام الخبير هما:",
+            "في شجرة البحث، تسمى النقطة التي يبدأ منها البحث:",
+            "مجموعة العقد الواقعة على فرع واحد في شجرة البحث تسمى:",
+            "خوارزمية البحث التي تتبع مسارًا واحدًا إلى أقصى عمق ممكن قبل العودة للخلف تسمى:",
+            "دائرة إلكترونية بسيطة تقوم بعملية منطقية على مدخل واحد أو أكثر وتنتج مخرجاً منطقياً واحداً، هي:",
+            "أي بوابة منطقية تعطي مخرجاً قيمته (1) فقط إذا كانت قيمة جميع مداخلها (1)؟",
+            "أي بوابة منطقية تعطي مخرجاً قيمته (0) فقط إذا كانت قيمة جميع مداخلها (0)؟",
+            "البوابة المنطقية التي لها مدخل واحد ومخرج واحد وتقوم بعكس قيمة المدخل هي:",
+            "ما ناتج العبارة المنطقية التالية: 1 AND (0 OR 1)؟",
+            "البوابة المنطقية (NAND) هي بوابة مشتقة من بوابتي:",
+            "في الجبر البولي (المنطقي)، يرمز لعملية (AND) بالرمز:",
+            "في الجبر البولي (المنطقي)، يرمز لعملية (OR) بالرمز:",
+            "إذا كانت A=1, B=1, C=0، فما ناتج العبارة الجبرية المنطقية: A . (B + C)؟",
+            "أي من البوابات التالية تسمى \"العاكس\" (Inverter)؟",
+            "ما ناتج العبارة المنطقية: (1 NAND 0)؟",
+            "ما ناتج العبارة المنطقية: (0 NOR 0)؟",
+            "العلم الذي يعمل على حماية المعلومات والمعدات المستخدمة لتخزينها ومعالجتها ونقلها من السرقة أو التطفل، هو:",
+            "الخاصية التي تعني \"أن المعلومة متوفرة للأشخاص المصرح لهم فقط\" هي:",
+            "ضمان عدم تغيير البيانات أو تعديلها من قبل أشخاص غير مخولين هو تعريف لخاصية:",
+            "أي من المخاطر التالية يهدد \"سرية\" المعلومات؟",
+            "أي من التهديدات التالية يعتبر \"هجوماً إلكترونياً\" يهدف إلى إيقاف موقع عن العمل؟",
+            "التقنية التي تعمل على إخفاء عناوين IP الخاصة بالشبكة الداخلية عند اتصالها بالإنترنت هي:",
+            "\"مزج النص الأصلي بمعلومات أخرى ليظهر بمظهر غير مفهوم\" هو تعريف لـ:",
+            "النص الواضح والمقروء قبل عملية التشفير يسمى:",
+            "سلسلة الرموز أو العدد الذي يستخدم في خوارزمية التشفير، وتعتمد قوة التشفير عليه، هو:",
+            "تصنف خوارزمية \"الخط المتعرج\" (Zig-Zag Cipher) على أنها من خوارزميات:",
+            "باستخدام خوارزمية الخط المتعرج ومفتاح تشفير (عدد الأسطر) يساوي 2، ما هو النص المشفر للرسالة \"STAY HOME\"؟",
+            "ما هو النص الأصلي للرسالة المشفرة \"HLOELWRD\" إذا تم تشفيرها بخوارزمية الخط المتعرج ومفتاح يساوي 2؟",
+            "ما هي أهمية الحفاظ على سرية \"مفتاح التشفير\"؟",
+            "أي من العناصر التالية ليس من عناصر عملية التشفير الأساسية؟",
+            "ما هو الهدف الرئيسي من التشفير؟"
+        ];
+
+        const optionsText = [
+            ['أ) 2', 'ب) 8', 'ج) 10', 'د) 16'],
+            ['أ) 0، 1، 2', 'ب) 0، 1', 'ج) من 0 إلى 7', 'د) من 0 إلى 9'],
+            ['أ) (177)₈', 'ب) (205)₈', 'ج) (64)₈', 'د) (381)₈'],
+            ['أ) بايت (Byte)', 'ب) بت (Bit)', 'ج) رقم (Digit)', 'د) كلمة (Word)'],
+            ['أ) 10', 'ب) 100', 'ج) 1000', 'د) 1'],
+            ['أ) 10', 'ب) 11', 'ج) 12', 'د) 13'],
+            ['أ) 11001', 'ب) 10011', 'ج) 11101', 'د) 10101'],
+            ['أ) 11', 'ب) 12', 'ج) 13', 'د) 14'],
+            ['أ) 152', 'ب) 162', 'ج) 172', 'د) 182'],
+            ['أ) خانتين (2 بت)', 'ب) ثلاث خانات (3 بت)', 'ج) أربع خانات (4 بت)', 'د) ثماني خانات (8 بت)'],
+            ['أ) 1000', 'ب) 111', 'ج) 1010', 'د) 1001'],
+            ['أ) 111101', 'ب) 101111', 'ج) 011101', 'د) 110111'],
+            ['أ) الروبوتات', 'ب) النظم الخبيرة', 'ج) الذكاء الاصطناعي', 'د) أمن المعلومات'],
+            ['أ) اختبار سرعة الحاسوب', 'ب) تحديد ما إذا كان للآلة القدرة على التفكير كالإنسان', 'ج) اختبار لغات البرمجة', 'د) اختبار أمان النظام'],
+            ['أ) C++', 'ب) Java', 'ج) Lisp', 'د) Python'],
+            ['أ) النظام الخبير', 'ب) الذكاء الاصطناعي', 'ج) الخوارزمية', 'د) الروبوت'],
+            ['أ) كتابة الشعر', 'ب) التحليل المالي', 'ج) استكشاف الأماكن البعيدة والخطرة', 'د) جميع ما ذكر'],
+            ['أ) الروبوت', 'ب) النظام الخبير', 'ج) محرك البحث', 'د) شجرة البحث'],
+            ['أ) PUFF', 'ب) PROSPECTOR', 'ج) DESIGN ADVISOR', 'د) DENDRAL'],
+            ['أ) قاعدة البيانات ومحرك البحث', 'ب) قاعدة المعرفة ومحرك الاستدلال', 'ج) الواجهة الرسومية والذاكرة', 'د) المعالج والذاكرة'],
+            ['أ) العقدة الميتة', 'ب) العقدة الهدف', 'ج) الجذر (Root)', 'د) المسار'],
+            ['أ) الحالة', 'ب) المسار (Path)', 'ج) الفضاء', 'د) الهدف'],
+            ['أ) البحث في العرض أولاً', 'ب) البحث في العمق أولاً (DFS)', 'ج) البحث العشوائي', 'د) البحث الأفقي'],
+            ['أ) الترانزستور', 'ب) المقاوم', 'ج) البوابة المنطقية', 'د) المعالج الدقيق'],
+            ['أ) AND', 'ب) OR', 'ج) NOT', 'د) NAND'],
+            ['أ) AND', 'ب) OR', 'ج) NOT', 'د) NOR'],
+            ['أ) AND', 'ب) OR', 'ج) NOT', 'د) XOR'],
+            ['أ) 0', 'ب) 1', 'ج) 2', 'د) خطأ'],
+            ['أ) NOT و OR', 'ب) NOT و AND', 'ج) AND و OR', 'د) NOT و XOR'],
+            ['أ) +', 'ب) .', 'ج) \' (شرطة علوية)', 'د) /'],
+            ['أ) +', 'ب) .', 'ج) \' (شرطة علوية)', 'د) /'],
+            ['أ) 0', 'ب) 1', 'c) A', 'd) C'],
+            ['أ) AND', 'ب) OR', 'ج) NOT', 'د) NAND'],
+            ['أ) 0', 'ب) 1', 'ج) غير معروف', 'د) 2'],
+            ['أ) 0', 'ب) 1', 'ج) غير معروف', 'د) 2'],
+            ['أ) الذكاء الاصطناعي', 'ب) علم الروبوتات', 'ج) أمن المعلومات', 'د) علم البيانات'],
+            ['أ) السلامة (Integrity)', 'ب) السرية (Confidentiality)', 'ج) التوافر (Availability)', 'د) الموثوقية'],
+            ['أ) السلامة (Integrity)', 'ب) السرية (Confidentiality)', 'ج) التوافر (Availability)', 'د) عدم الإنكار'],
+            ['أ) التنصت', 'ب) التعديل على المحتوى', 'ج) إيقاف الخدمة', 'د) انتحال الشخصية'],
+            ['أ) هجوم حجب الخدمة (DoS)', 'ب) التنصت', 'c) سرقة البيانات', 'd) التعديل'],
+            ['أ) Firewall', 'ب) DNS', 'ج) NAT', 'د) VPN'],
+            ['أ) أمن المعلومات', 'ب) التوقيع الرقمي', 'ج) التشفير', 'د) التحقق'],
+            ['أ) النص المشفر', 'ب) المفتاح', 'ج) النص الأصلي', 'د) الخوارزمية'],
+            ['أ) النص الأصلي', 'ب) النص المشفر', 'ج) الخوارزمية', 'د) مفتاح التشفير'],
+            ['أ) التعويض', 'ب) التبديل', 'ج) المفتاح العام', 'د) التدفق'],
+            ['أ) SYOATHME', 'ب) S A H M T Y O E', 'ج) EOMHYATS', 'د) لا يمكن تشفيرها'],
+            ['أ) HELLO WORLD', 'ب) WORLD HELLO', 'ج) HWLO ELRD', 'د) لا يمكن فكها'],
+            ['أ) لزيادة سرعة التشفير', 'ب) لأنه يمثل الخوارزمية نفسها', 'ج) لأن معرفته تسمح بفك تشفير الرسائل', 'د) لأنه يقلل حجم النص المشفر'],
+            ['أ) خوارزمية التشفير', 'ب) مفتاح التشفير', 'ج) النص الأصلي', 'د) حجم القرص الصلب'],
+            ['أ) ضغط البيانات', 'ب) زيادة سرعة النقل', 'ج) ضمان سرية وسلامة البيانات', 'د) تنظيم الملفات']
+        ];
+
+
+        document.getElementById('quizForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentID = document.getElementById('studentID').value.trim();
+
+            if (!studentName || !studentID) {
+                alert('الرجاء إدخال اسم المتقدم ورقم الجلوس.');
+                return;
+            }
+
+            document.getElementById('displayedName').textContent = studentName;
+            document.getElementById('displayedID').textContent = studentID;
+
+            let score = 0;
+            const answerDetails = document.getElementById('answerDetails');
+            answerDetails.innerHTML = ''; // Clear previous results
+
+            for (let i = 0; i < correctAnswers.length; i++) {
+                const questionName = `q${i}`;
+                const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+                const questionElement = document.querySelector(`.question[data-question-index="${i}"]`);
+                const questionText = questionsText[i];
+                const correctOptionLetter = correctAnswers[i];
+                const correctOptionIndex = ['a', 'b', 'c', 'd'].indexOf(correctOptionLetter);
+                const correctAnswerText = optionsText[i][correctOptionIndex];
+
+                const resultItem = document.createElement('div');
+                resultItem.classList.add('result-item');
+
+                const questionContent = document.createElement('div');
+                questionContent.classList.add('result-question-text');
+                questionContent.innerHTML = `<p>${i + 1}. ${questionText}</p>`;
+                resultItem.appendChild(questionContent);
+
+                const statusContent = document.createElement('div');
+                statusContent.classList.add('result-status');
+
+                if (selectedOption) {
+                    if (selectedOption.value === correctAnswers[i]) {
+                        score++;
+                        statusContent.classList.add('correct');
+                        statusContent.textContent = 'صحيحة';
+                    } else {
+                        statusContent.classList.add('incorrect');
+                        statusContent.innerHTML = `خاطئة<br><span class="correct-answer-text">الإجابة الصحيحة: ${correctAnswerText}</span>`;
+                    }
+                } else {
+                    statusContent.classList.add('incorrect');
+                    statusContent.innerHTML = `لم تتم الإجابة<br><span class="correct-answer-text">الإجابة الصحيحة: ${correctAnswerText}</span>`;
+                }
+                resultItem.appendChild(statusContent);
+                answerDetails.appendChild(resultItem);
+            }
+
+            const totalQuestions = correctAnswers.length;
+            const percentage = (score / totalQuestions) * 100;
+
+            document.getElementById('score').textContent = score;
+            document.getElementById('percentage').textContent = percentage.toFixed(2);
+
+            const feedbackDiv = document.getElementById('feedback');
+            if (percentage >= 60) { // Example passing threshold
+                feedbackDiv.classList.remove('fail');
+                feedbackDiv.classList.add('pass');
+                feedbackDiv.textContent = 'تهانينا! لقد اجتزت الاختبار بنجاح.';
+            } else {
+                feedbackDiv.classList.remove('pass');
+                feedbackDiv.classList.add('fail');
+                feedbackDiv.textContent = 'للأسف، لم تجتز الاختبار. يمكنك المحاولة مرة أخرى.';
+            }
+
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
